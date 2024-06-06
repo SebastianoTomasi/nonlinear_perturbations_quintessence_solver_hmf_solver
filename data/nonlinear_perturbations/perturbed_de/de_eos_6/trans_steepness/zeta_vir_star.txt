@@ -1,0 +1,107 @@
+Run parameters:
+does_de_cluster=True
+save_data=True
+time_domain=True
+number_of_points=50
+varied_parameter=trans_steepness
+varied_par_values=None
+init_value=-0.5
+final_value=-0.9
+n_samples=1
+
+Cosmological parameters:
+omega_matter_now=0.3
+omega_rad_now=0
+hubble_constant_standard_units=67
+scale_at_lss=0.0009165902841429881
+a_min=1e-10
+a_max=1
+min_redshift=0
+max_redshift=20
+spectral_index=1
+sigma8=0.85
+
+Dark energy eos parameters:
+selected_de_eos=de_eos_6
+w_i=-0.4
+w_f=-1
+trans_steepness=-0.5
+trans_z=0.5
+w=-1
+c_eff_value=0
+
+Precision parameters:
+virialization_scale_tol=1.0e-06
+turn_around_scale_tol=1.0e-06
+a_ini=1.0e-10
+nonlinear_perturbations_atol=1.0e-10
+nonlinear_perturbations_rtol=1.0e-08
+growth_factor_atol=1.0e-10
+growth_factor_rtol=1.0e-08
+dark_density_evolution_atol=1.0e-10
+dark_density_evolution_rtol=1.0e-08
+dark_density_evolution_max_step=1.0e-03
+friedmann_atol=1.0e-10
+friedmann_rtol=1.0e-08
+friedmann_max_stepsize=1.0e-03
+exact_decimals=5.0e+00
+numerical_infty=1.0e+11
+normalization_integrand_atol=1.0e-08
+normalization_integrand_rtol=1.0e-06
+mass_variance_filtered_spectrum_atol=1.0e-06
+mass_variance_filtered_spectrum_rtol=1.0e-04
+log_der_of_log_sigma_atol=1.0e-06
+log_der_of_log_sigma_rtol=1.0e-04
+
+*********************************
+0.000000000e+00	3.131291741e+02
+4.081632653e-01	2.239085175e+02
+8.163265306e-01	1.972850502e+02
+1.224489796e+00	1.873426630e+02
+1.632653061e+00	1.829874092e+02
+2.040816327e+00	1.808139469e+02
+2.448979592e+00	1.796355310e+02
+2.857142857e+00	1.789925556e+02
+3.265306122e+00	1.786208057e+02
+3.673469388e+00	1.783959466e+02
+4.081632653e+00	1.781959363e+02
+4.489795918e+00	1.780580835e+02
+4.897959184e+00	1.779648394e+02
+5.306122449e+00	1.778960486e+02
+5.714285714e+00	1.778452573e+02
+6.122448980e+00	1.778045172e+02
+6.530612245e+00	1.777776293e+02
+6.938775510e+00	1.777551890e+02
+7.346938776e+00	1.777377057e+02
+7.755102041e+00	1.777231508e+02
+8.163265306e+00	1.777139166e+02
+8.571428571e+00	1.777044423e+02
+8.979591837e+00	1.776953597e+02
+9.387755102e+00	1.776910139e+02
+9.795918367e+00	1.776827401e+02
+1.020408163e+01	1.776791912e+02
+1.061224490e+01	1.776755268e+02
+1.102040816e+01	1.776728414e+02
+1.142857143e+01	1.776685057e+02
+1.183673469e+01	1.776682153e+02
+1.224489796e+01	1.776637527e+02
+1.265306122e+01	1.776630231e+02
+1.306122449e+01	1.776612693e+02
+1.346938776e+01	1.776622088e+02
+1.387755102e+01	1.776615000e+02
+1.428571429e+01	1.776599639e+02
+1.469387755e+01	1.776600488e+02
+1.510204082e+01	1.776591421e+02
+1.551020408e+01	1.776602337e+02
+1.591836735e+01	1.776629238e+02
+1.632653061e+01	1.776627560e+02
+1.673469388e+01	1.776660252e+02
+1.714285714e+01	1.776695442e+02
+1.755102041e+01	1.776719754e+02
+1.795918367e+01	1.776754860e+02
+1.836734694e+01	1.776803584e+02
+1.877551020e+01	1.776833748e+02
+1.918367347e+01	1.776914228e+02
+1.959183673e+01	1.776961513e+02
+2.000000000e+01	1.777038037e+02
+#################################

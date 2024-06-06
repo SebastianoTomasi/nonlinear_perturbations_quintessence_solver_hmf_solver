@@ -1,0 +1,78 @@
+Run parameters:
+does_de_cluster=True
+save_data=True
+time_domain=True
+number_of_points=50
+varied_parameter=w
+init_value=-1
+final_value=-0.6
+n_samples=1
+
+Cosmological parameters:
+omega_matter_now=0.3
+omega_rad_now=0
+hubble_constant_standard_units=67
+scale_at_lss=0.0009165902841429881
+a_min=1e-10
+a_max=1
+min_redshift=0
+max_redshift=20
+spectral_index=1
+
+Dark energy eos parameters:
+selected_de_eos=wcdm
+w_i=-1
+w_f=-1
+trans_steepness=10
+trans_z=0.5
+w=-1.0
+c_eff_value=0
+
+Precision parameters:
+virialization_scale_tol=1.0e-06
+turn_around_scale_tol=1.0e-06
+a_ini=1.0e-10
+nonlinear_perturbations_atol=1.0e-10
+nonlinear_perturbations_rtol=1.0e-08
+growth_factor_atol=1.0e-10
+growth_factor_rtol=1.0e-08
+dark_density_evolution_atol=1.0e-10
+dark_density_evolution_rtol=1.0e-08
+dark_density_evolution_max_step=1.0e-03
+friedmann_atol=1.0e-10
+friedmann_rtol=1.0e-08
+friedmann_max_stepsize=1.0e-03
+exact_decimals=5.0e+00
+numerical_infty=1.0e+11
+
+*********************************
+9.165902841e-04	9.165902841e-04
+1.833180571e-03	1.833180567e-03
+9.120113276e-03	9.120110379e-03
+2.068560837e-02	2.068553085e-02
+3.485123720e-02	3.485061168e-02
+5.103559624e-02	5.103271904e-02
+6.908937036e-02	6.907970826e-02
+8.894147833e-02	8.891495171e-02
+1.105403625e-01	1.104771145e-01
+1.338421775e-01	1.337063958e-01
+1.588262104e-01	1.585574306e-01
+1.854886917e-01	1.849899727e-01
+2.138785737e-01	2.130002469e-01
+2.440759821e-01	2.425939210e-01
+2.762265990e-01	2.738122238e-01
+3.101952558e-01	3.063909303e-01
+3.465527581e-01	3.406977561e-01
+3.852284525e-01	3.764282841e-01
+4.268285261e-01	4.138318587e-01
+4.711110673e-01	4.523067944e-01
+5.197590548e-01	4.927924917e-01
+5.722751233e-01	5.342135103e-01
+6.326930116e-01	5.787527594e-01
+7.002479063e-01	6.244926401e-01
+7.678028010e-01	6.659704535e-01
+8.312426154e-01	7.011841174e-01
+8.935516779e-01	7.324544839e-01
+9.588025081e-01	7.619446595e-01
+1.000000000e+00	7.789810097e-01
+#################################

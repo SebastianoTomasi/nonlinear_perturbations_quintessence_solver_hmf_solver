@@ -1,0 +1,85 @@
+Run parameters:
+does_de_cluster=False
+save_data=True
+time_domain=True
+number_of_points=50
+varied_parameter=trans_steepness
+varied_par_values=None
+init_value=-0.5
+final_value=-0.9
+n_samples=1
+
+Cosmological parameters:
+omega_matter_now=0.3
+omega_rad_now=0
+hubble_constant_standard_units=67
+scale_at_lss=0.0009165902841429881
+a_min=1e-10
+a_max=1
+min_redshift=0
+max_redshift=20
+spectral_index=1
+sigma8=0.85
+
+Dark energy eos parameters:
+selected_de_eos=de_eos_6
+w_i=-0.4
+w_f=-1
+trans_steepness=-0.5
+trans_z=0.5
+w=-1
+c_eff_value=0
+
+Precision parameters:
+virialization_scale_tol=1.0e-06
+turn_around_scale_tol=1.0e-06
+a_ini=1.0e-10
+nonlinear_perturbations_atol=1.0e-10
+nonlinear_perturbations_rtol=1.0e-08
+growth_factor_atol=1.0e-10
+growth_factor_rtol=1.0e-08
+dark_density_evolution_atol=1.0e-10
+dark_density_evolution_rtol=1.0e-08
+dark_density_evolution_max_step=1.0e-03
+friedmann_atol=1.0e-10
+friedmann_rtol=1.0e-08
+friedmann_max_stepsize=1.0e-03
+exact_decimals=5.0e+00
+numerical_infty=1.0e+11
+normalization_integrand_atol=1.0e-08
+normalization_integrand_rtol=1.0e-06
+mass_variance_filtered_spectrum_atol=1.0e-06
+mass_variance_filtered_spectrum_rtol=1.0e-04
+log_der_of_log_sigma_atol=1.0e-06
+log_der_of_log_sigma_rtol=1.0e-04
+
+*********************************
+9.165902841e-04	9.165902841e-04
+1.833180568e-03	1.833180568e-03
+1.099908341e-02	1.099908323e-02
+3.072052230e-02	3.072049533e-02
+5.346392901e-02	5.346353665e-02
+7.787020578e-02	7.786781200e-02
+1.035980327e-01	1.035886370e-01
+1.305698219e-01	1.305414822e-01
+1.587604359e-01	1.586886795e-01
+1.881711722e-01	1.880107886e-01
+2.188136384e-01	2.184871946e-01
+2.507603677e-01	2.501421229e-01
+2.840258352e-01	2.829213761e-01
+3.188909201e-01	3.170043048e-01
+3.555473333e-01	3.524406714e-01
+3.937395785e-01	3.888051765e-01
+4.343847696e-01	4.267260481e-01
+4.775344328e-01	4.659146457e-01
+5.227178096e-01	5.055553653e-01
+5.698464574e-01	5.451586597e-01
+6.205505262e-01	5.855546598e-01
+6.812965495e-01	6.306915404e-01
+7.393146428e-01	6.703437111e-01
+7.973327360e-01	7.065986030e-01
+8.518248355e-01	7.376329673e-01
+9.060415238e-01	7.657458039e-01
+9.631667721e-01	7.925739523e-01
+1.000000000e+00	8.084566678e-01
+#################################

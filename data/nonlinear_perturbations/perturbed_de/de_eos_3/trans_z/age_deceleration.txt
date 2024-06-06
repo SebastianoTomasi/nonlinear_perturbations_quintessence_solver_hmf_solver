@@ -1,0 +1,60 @@
+Run parameters:
+does_de_cluster=True
+save_data=True
+time_domain=True
+number_of_points=50
+varied_parameter=trans_z
+varied_par_values=[0.1, 0.8, 2]
+init_value=-0.5
+final_value=-0.9
+n_samples=3
+
+Cosmological parameters:
+omega_matter_now=0.3
+omega_rad_now=0
+hubble_constant_standard_units=67
+scale_at_lss=0.0009165902841429881
+a_min=1e-10
+a_max=1
+min_redshift=0
+max_redshift=20
+spectral_index=1
+sigma8=0.85
+
+Dark energy eos parameters:
+selected_de_eos=de_eos_3
+w_i=-0.4
+w_f=-1
+trans_steepness=0.1
+trans_z=0.1,0.8,2
+w=-1
+c_eff_value=0
+
+Precision parameters:
+virialization_scale_tol=1.0e-06
+turn_around_scale_tol=1.0e-06
+a_ini=1.0e-10
+nonlinear_perturbations_atol=1.0e-10
+nonlinear_perturbations_rtol=1.0e-08
+growth_factor_atol=1.0e-10
+growth_factor_rtol=1.0e-08
+dark_density_evolution_atol=1.0e-10
+dark_density_evolution_rtol=1.0e-08
+dark_density_evolution_max_step=1.0e-03
+friedmann_atol=1.0e-10
+friedmann_rtol=1.0e-08
+friedmann_max_stepsize=1.0e-03
+exact_decimals=5.0e+00
+numerical_infty=1.0e+11
+normalization_integrand_atol=1.0e-08
+normalization_integrand_rtol=1.0e-06
+mass_variance_filtered_spectrum_atol=1.0e-06
+mass_variance_filtered_spectrum_rtol=1.0e-04
+log_der_of_log_sigma_atol=1.0e-06
+log_der_of_log_sigma_rtol=1.0e-04
+
+*********************************
+Var_par: trans_z	t_0	q_0
+0.1             	12.643	-0.379
+0.8             	13.788	-0.549
+2               	14.038	-0.549
