@@ -40,7 +40,7 @@ bakground_results=solve_background.solve(True,True)
 # perturbation_results,background_results=desca.solve(only_linear)
 # quintessence_results=sfpa.solve()
 
-save=False
+save=True
 if not only_linear:
     """Linear matter density contrast at collapse"""
     mypl.plot(perturbation_results.linear_matter_density_contrasts_at_collapse_z,"$z$","$\delta_c(z)$",
