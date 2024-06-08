@@ -35,12 +35,12 @@ import simulation_parameters as params
 sys.path.append("./friedmann_solver")
 import friedmann_solver as solve_background
 
-# only_linear=False
+only_linear=False
 bakground_results=solve_background.solve(True,True)
-# perturbation_results,background_results=desca.solve(only_linear)
+perturbation_results,background_results=desca.solve(only_linear)
 # quintessence_results=sfpa.solve()
 
-save=True
+save=False
 if not only_linear:
     """Linear matter density contrast at collapse"""
     mypl.plot(perturbation_results.linear_matter_density_contrasts_at_collapse_z,"$z$","$\delta_c(z)$",

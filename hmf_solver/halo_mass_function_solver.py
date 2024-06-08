@@ -32,7 +32,7 @@ import simulation_parameters as params
 
 #%%
 
-save=True#Save the plots and data
+save=False#Save the plots and data
 
 if  params.this_run_specifier_1=="perturbed_de":
     this_run_specifier_4="cs2_equal_0"
