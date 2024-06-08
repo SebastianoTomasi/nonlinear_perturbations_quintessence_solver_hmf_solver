@@ -100,6 +100,18 @@ def import_class_pk(relative_path):
 
 
 
+def import_react_pk(relative_path,which):
+    aux=np.loadtxt(relative_path+".dat")
+    
+    if which=="l":
+        return [aux[:,0],aux[:,1]]
+    elif which=="nl":
+        return [aux[:,0],aux[:,-1]]
+    else:
+        raise Exception(f"which={which} not recognized")
+        
+
+
 def import_from_txt_twocolumns(path):
     line="line"
     start_reading=False

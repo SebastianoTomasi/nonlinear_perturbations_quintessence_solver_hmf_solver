@@ -34,6 +34,8 @@ import simulation_parameters as params
 
 save=False#Save the plots and data
 
+use_react_data=True
+
 if  params.this_run_specifier_1=="perturbed_de":
     this_run_specifier_4="cs2_equal_0"
 elif params.this_run_specifier_1=="unperturbed_de":
@@ -225,15 +227,22 @@ sigma8_values=[]
 
 legend=[]
 
-class_data_path_base="../data/class/"+params.this_run_specifier_2+"/"+params.this_run_specifier_3+"/"+this_run_specifier_4+"/"
-if not aux.check_if_parameters_match(path_to_nonlinear=get_deltac_from,path_to_class=class_data_path_base):
-    raise Exception("The parameters in the CLASS simulation do not match the parameters used for the nonlinear density contrast.")
+if use_react_data:
+    print("Using power spectra by ReAct")
+    which_data="react"
+    data_path_base="../data/react/"+params.this_run_specifier_2+"/"+params.this_run_specifier_3+"/"+this_run_specifier_4+"/"
+else:
+    print("Using power spectra by CLASS")
+    which_data="class"
+    data_path_base="../data/class/"+params.this_run_specifier_2+"/"+params.this_run_specifier_3+"/"+this_run_specifier_4+"/"
+    if not aux.check_if_parameters_match(path_to_nonlinear=get_deltac_from,path_to_class=data_path_base):
+        raise Exception("The parameters in the CLASS simulation do not match the parameters used for the nonlinear density contrast.")
     
 for redshift_index in range(1,len(params.z)+1):
     len_var_par_values=len(var_par_values)
     for i in range(len_var_par_values):
-        class_data_path=class_data_path_base+str(i)+"_"
-        pk_data_path=class_data_path+"z"+str(redshift_index)+"_pk"
+        data_path=data_path_base+str(i)+"_"
+        pk_data_path=data_path+"z"+str(redshift_index)+"_pk"
         
         """Check if the var_par_values match with the class simulation ones."""
         
@@ -246,7 +255,11 @@ for redshift_index in range(1,len(params.z)+1):
                                                 fill_value="extrapolate", assume_sorted=False)
     
         """Before creating the mass fucntion we need to get the power spectrum and normalize it."""
-        linear_power_spectrum_numerical=np.array(myie.import_class_pk(pk_data_path))
+        if use_react_data:
+            linear_power_spectrum_numerical=np.array(myie.import_react_pk(pk_data_path,"l"))
+        else:
+            linear_power_spectrum_numerical=np.array(myie.import_class_pk(pk_data_path))
+            
         linear_power_spectrum=sp.interpolate.interp1d(linear_power_spectrum_numerical[0], linear_power_spectrum_numerical[1],
                                                 fill_value="extrapolate", assume_sorted=True)
         
@@ -301,8 +314,10 @@ for redshift_index in range(1,len(params.z)+1):
         
         linear_power_spectrums.append([k,linear_power_spectrum(k)])
         linear_power_spectrums_percentage.append([k,(linear_power_spectrum(k)/pk_lcdm[redshift_index-1](k)-1)*100])
-        
-        nonlinear_power_spectrum_numerical=myie.import_class_pk(relative_path=class_data_path+"z"+str(redshift_index)+"_"+"pk_nl")
+        if use_react_data:
+            nonlinear_power_spectrum_numerical=myie.import_react_pk(relative_path=data_path+"z"+str(redshift_index)+"_"+"pk",which="nl")
+        else:
+            nonlinear_power_spectrum_numerical=myie.import_class_pk(relative_path=data_path+"z"+str(redshift_index)+"_"+"pk_nl")
         nonlinear_power_spectrum=sp.interpolate.interp1d(nonlinear_power_spectrum_numerical[0], nonlinear_power_spectrum_numerical[1],
                                             fill_value="extrapolate", assume_sorted=True)
         nonlinear_power_spectrums.append([k,nonlinear_power_spectrum(k)])
@@ -311,10 +326,10 @@ for redshift_index in range(1,len(params.z)+1):
     """Save data"""
     if save:
         save_data_to_path_i=save_data_to_path+str(redshift_index-1)+"_"+params.fitting_func.lower()
-        myie.save_to_txt_multicolumn(linear_power_spectrums[-len_var_par_values:], path=save_data_to_path_i+"_pk",var_par=params.this_run_specifier_3,var_par_values=var_par_values)
-        myie.save_to_txt_multicolumn(linear_power_spectrums_percentage[-len_var_par_values:], path=save_data_to_path_i+"_pk_perc",var_par=params.this_run_specifier_3,var_par_values=var_par_values)
-        myie.save_to_txt_multicolumn(nonlinear_power_spectrums[-len_var_par_values:], path=save_data_to_path_i+"_nl_pk",var_par=params.this_run_specifier_3,var_par_values=var_par_values)
-        myie.save_to_txt_multicolumn(nonlinear_power_spectrums_percentage[-len_var_par_values:], path=save_data_to_path_i+"_nl_pk_perc",var_par=params.this_run_specifier_3,var_par_values=var_par_values)
+        myie.save_to_txt_multicolumn(linear_power_spectrums[-len_var_par_values:], path=save_data_to_path_i+"_pk/_"+which_data,var_par=params.this_run_specifier_3,var_par_values=var_par_values)
+        myie.save_to_txt_multicolumn(linear_power_spectrums_percentage[-len_var_par_values:], path=save_data_to_path_i+"_pk_perc/_"+which_data,var_par=params.this_run_specifier_3,var_par_values=var_par_values)
+        myie.save_to_txt_multicolumn(nonlinear_power_spectrums[-len_var_par_values:], path=save_data_to_path_i+"_nl_pk/_"+which_data,var_par=params.this_run_specifier_3,var_par_values=var_par_values)
+        myie.save_to_txt_multicolumn(nonlinear_power_spectrums_percentage[-len_var_par_values:], path=save_data_to_path_i+"_nl_pk_perc/_"+which_data,var_par=params.this_run_specifier_3,var_par_values=var_par_values)
         myie.save_to_txt_multicolumn(halo_mass_functions[-len_var_par_values:], path=save_data_to_path_i+"_hmf",var_par=params.this_run_specifier_3,var_par_values=var_par_values)
         
         myie.save_to_txt_sigma8(sigma8_values,path=save_plot_to_path+"sigma8",var_par=params.this_run_specifier_3,var_par_values=var_par_values)
@@ -335,7 +350,7 @@ mypl.plot([nonlinear_power_spectrums,nonlinear_power_spectrums_percentage],
             yscale=["log","linear"],
             ncol=2,
             # dotted=True,
-            legend=[legend,None],save=save,name=save_plot_to_path+params.fitting_func.lower()+"_nl_pk")
+            legend=[legend,None],save=save,name=save_plot_to_path+params.fitting_func.lower()+"_nl_pk/_"+which_data)
 
 mypl.plot([linear_power_spectrums,linear_power_spectrums_percentage],
             xlabel=["",r"$k$  $[h{\rm Mpc}^{-1}]$"],
@@ -345,7 +360,7 @@ mypl.plot([linear_power_spectrums,linear_power_spectrums_percentage],
             yscale=["log","linear"],
             ncol=2,
             # dotted=True,
-            legend=[legend,None],save=save,name=save_plot_to_path+params.fitting_func.lower()+"_pk")
+            legend=[legend,None],save=save,name=save_plot_to_path+params.fitting_func.lower()+"_pk/_"+which_data)
 
 
 mypl.plot(f=[halo_mass_functions,mass_functions_percentage],
@@ -356,7 +371,7 @@ mypl.plot(f=[halo_mass_functions,mass_functions_percentage],
             yscale=["log","linear"],
             ncol=2,
             # dotted=True,
-            legend=[legend,None],save=save,name=save_plot_to_path+params.fitting_func.lower()+"_mf")
+            legend=[legend,None],save=save,name=save_plot_to_path+params.fitting_func.lower()+"_mf/_"+which_data)
 #%%
 for i,mfp in enumerate(mass_functions_percentage):
     arr=np.round(mfp[0])

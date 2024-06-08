@@ -4,7 +4,7 @@ save_data_on_exit = True
 save_history = True
 save_non_project_files = False
 project_type = 'empty-project-type'
-recent_files = ['../modified_actio_reactio/reactions/examples/plot_halo_ps.py', 'main.py']
+recent_files = ['data_modules/simulation_parameters.py', '../modified_actio_reactio/reactions/examples/plot_halo_ps.py']
 
 [main]
 version = 0.2.0
