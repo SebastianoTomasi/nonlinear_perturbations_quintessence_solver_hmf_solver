@@ -121,18 +121,23 @@ pk_lcdm=[]
 pk_nl_lcdm=[]
 hmf_lcdm=[]
 for redshift_index in range(1,len(params.z)+1):
-    class_pk_lcdm_numerical=myie.import_class_pk(class_data_lcdm+"_z"+str(redshift_index)+"_pk")
-    
+    if use_react_data:
+        pk_lcdm_numerical=myie.import_react_pk(class_data_lcdm+"_z"+str(redshift_index)+"_pk","l")
+    else:
+        pk_lcdm_numerical=myie.import_class_pk(class_data_lcdm+"_z"+str(redshift_index)+"_pk")
     """Check if the ranges for k nicely overlap. """
-    if not aux.krange_is_ok(class_pk_lcdm_numerical[0], params.min_k, params.max_k):
+    if not aux.krange_is_ok(pk_lcdm_numerical[0], params.min_k, params.max_k):
         raise Exception(f"The provided k range [{params.min_k}, {params.max_k}] is not compatible with the CLASS data.\
                         Please adjust k_min and k_max to be within the valid range\
-                            [{class_pk_lcdm_numerical[0][0]}, {class_pk_lcdm_numerical[0][-1]}].")
-                            
-    nonlinear_power_spectrum_lcdm_numerical=myie.import_class_pk(class_data_lcdm+"_z"+str(redshift_index)+"_pk_nl")
+                            [{pk_lcdm_numerical[0][0]}, {pk_lcdm_numerical[0][-1]}].")
+    if use_react_data:                        
+        nonlinear_power_spectrum_lcdm_numerical=myie.import_react_pk(class_data_lcdm+"_z"+str(redshift_index)+"_pk","nl")
+    else:
+        nonlinear_power_spectrum_lcdm_numerical=myie.import_class_pk(class_data_lcdm+"_z"+str(redshift_index)+"_pk_nl")
+        
     nonlinear_power_spectrum_lcdm=sp.interpolate.interp1d(nonlinear_power_spectrum_lcdm_numerical[0], nonlinear_power_spectrum_lcdm_numerical[1],
                                         fill_value="extrapolate", assume_sorted=True)
-    class_pk_lcdm=sp.interpolate.interp1d(class_pk_lcdm_numerical[0], class_pk_lcdm_numerical[1],
+    class_pk_lcdm=sp.interpolate.interp1d(pk_lcdm_numerical[0], pk_lcdm_numerical[1],
                                         fill_value="extrapolate", assume_sorted=True)
 
 
