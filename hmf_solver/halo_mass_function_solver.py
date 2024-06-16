@@ -53,6 +53,7 @@ get_growth_from="../data"+"/"+"nonlinear_perturbations"+"/" +params.this_run_spe
 get_growth_lcdm="../data/nonlinear_perturbations/LCDM/growth_factor"
 get_deltac_lcdm="../data/nonlinear_perturbations/LCDM/delta_c"
 class_data_lcdm="../data/class/LCDM/"
+react_data_lcdm="../data/react/lcdm/"
 
 k=mynm.logspace(params.min_k,params.max_k,5e2)
 masses=mynm.logspace(params.min_mass,params.max_mass,params.number_of_masses)
@@ -122,7 +123,7 @@ pk_nl_lcdm=[]
 hmf_lcdm=[]
 for redshift_index in range(1,len(params.z)+1):
     if use_react_data:
-        pk_lcdm_numerical=myie.import_react_pk(class_data_lcdm+"_z"+str(redshift_index)+"_pk","l")
+        pk_lcdm_numerical=myie.import_react_pk(react_data_lcdm+"_z"+str(redshift_index)+"_pk","l")
     else:
         pk_lcdm_numerical=myie.import_class_pk(class_data_lcdm+"_z"+str(redshift_index)+"_pk")
     """Check if the ranges for k nicely overlap. """
