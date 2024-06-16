@@ -32,7 +32,7 @@ import simulation_parameters as params
 
 #%%
 
-save=False#Save the plots and data
+save=True#Save the plots and data
 
 use_react_data=True
 
@@ -132,9 +132,9 @@ for redshift_index in range(1,len(params.z)+1):
                         Please adjust k_min and k_max to be within the valid range\
                             [{pk_lcdm_numerical[0][0]}, {pk_lcdm_numerical[0][-1]}].")
     if use_react_data:                        
-        nonlinear_power_spectrum_lcdm_numerical=myie.import_react_pk(class_data_lcdm+"_z"+str(redshift_index)+"_pk","nl")
+        nonlinear_power_spectrum_lcdm_numerical=myie.import_react_pk(react_data_lcdm+"_z"+str(redshift_index)+"_pk","nl")
     else:
-        nonlinear_power_spectrum_lcdm_numerical=myie.import_class_pk(class_data_lcdm+"_z"+str(redshift_index)+"_pk_nl")
+     nonlinear_power_spectrum_lcdm_numerical=myie.import_class_pk(class_data_lcdm+"_z"+str(redshift_index)+"_pk_nl")
         
     nonlinear_power_spectrum_lcdm=sp.interpolate.interp1d(nonlinear_power_spectrum_lcdm_numerical[0], nonlinear_power_spectrum_lcdm_numerical[1],
                                         fill_value="extrapolate", assume_sorted=True)
