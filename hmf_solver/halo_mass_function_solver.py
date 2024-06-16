@@ -331,12 +331,12 @@ for redshift_index in range(1,len(params.z)+1):
     
     """Save data"""
     if save:
-        save_data_to_path_i=save_data_to_path+str(redshift_index-1)+"_"+params.fitting_func.lower()
-        myie.save_to_txt_multicolumn(linear_power_spectrums[-len_var_par_values:], path=save_data_to_path_i+"_pk/_"+which_data,var_par=params.this_run_specifier_3,var_par_values=var_par_values)
-        myie.save_to_txt_multicolumn(linear_power_spectrums_percentage[-len_var_par_values:], path=save_data_to_path_i+"_pk_perc/_"+which_data,var_par=params.this_run_specifier_3,var_par_values=var_par_values)
-        myie.save_to_txt_multicolumn(nonlinear_power_spectrums[-len_var_par_values:], path=save_data_to_path_i+"_nl_pk/_"+which_data,var_par=params.this_run_specifier_3,var_par_values=var_par_values)
-        myie.save_to_txt_multicolumn(nonlinear_power_spectrums_percentage[-len_var_par_values:], path=save_data_to_path_i+"_nl_pk_perc/_"+which_data,var_par=params.this_run_specifier_3,var_par_values=var_par_values)
-        myie.save_to_txt_multicolumn(halo_mass_functions[-len_var_par_values:], path=save_data_to_path_i+"_hmf",var_par=params.this_run_specifier_3,var_par_values=var_par_values)
+    #     save_data_to_path_i=save_data_to_path+str(redshift_index-1)+"_"+params.fitting_func.lower()
+    #     myie.save_to_txt_multicolumn(linear_power_spectrums[-len_var_par_values:], path=save_data_to_path_i+"_pk/_"+which_data,var_par=params.this_run_specifier_3,var_par_values=var_par_values)
+    #     myie.save_to_txt_multicolumn(linear_power_spectrums_percentage[-len_var_par_values:], path=save_data_to_path_i+"_pk_perc/_"+which_data,var_par=params.this_run_specifier_3,var_par_values=var_par_values)
+    #     myie.save_to_txt_multicolumn(nonlinear_power_spectrums[-len_var_par_values:], path=save_data_to_path_i+"_nl_pk/_"+which_data,var_par=params.this_run_specifier_3,var_par_values=var_par_values)
+    #     myie.save_to_txt_multicolumn(nonlinear_power_spectrums_percentage[-len_var_par_values:], path=save_data_to_path_i+"_nl_pk_perc/_"+which_data,var_par=params.this_run_specifier_3,var_par_values=var_par_values)
+    #     myie.save_to_txt_multicolumn(halo_mass_functions[-len_var_par_values:], path=save_data_to_path_i+"_hmf",var_par=params.this_run_specifier_3,var_par_values=var_par_values)
         
         myie.save_to_txt_sigma8(sigma8_values,path=save_plot_to_path+"sigma8",var_par=params.this_run_specifier_3,var_par_values=var_par_values)
 print(f"Output saved at: {save_data_to_path}")
@@ -356,7 +356,7 @@ mypl.plot([nonlinear_power_spectrums,nonlinear_power_spectrums_percentage],
             yscale=["log","linear"],
             ncol=2,
             # dotted=True,
-            legend=[legend,None],save=save,name=save_plot_to_path+params.fitting_func.lower()+"_nl_pk/_"+which_data)
+            legend=[legend,None],save=save,name=save_plot_to_path+params.fitting_func.lower()+"_nl_pk_"+which_data)
 
 mypl.plot([linear_power_spectrums,linear_power_spectrums_percentage],
             xlabel=["",r"$k$  $[h{\rm Mpc}^{-1}]$"],
@@ -366,7 +366,7 @@ mypl.plot([linear_power_spectrums,linear_power_spectrums_percentage],
             yscale=["log","linear"],
             ncol=2,
             # dotted=True,
-            legend=[legend,None],save=save,name=save_plot_to_path+params.fitting_func.lower()+"_pk/_"+which_data)
+            legend=[legend,None],save=save,name=save_plot_to_path+params.fitting_func.lower()+"_pk_"+which_data)
 
 
 mypl.plot(f=[halo_mass_functions,mass_functions_percentage],
@@ -377,7 +377,7 @@ mypl.plot(f=[halo_mass_functions,mass_functions_percentage],
             yscale=["log","linear"],
             ncol=2,
             # dotted=True,
-            legend=[legend,None],save=save,name=save_plot_to_path+params.fitting_func.lower()+"_mf/_"+which_data)
+            legend=[legend,None],save=save,name=save_plot_to_path+params.fitting_func.lower()+"_mf_"+which_data)
 #%%
 for i,mfp in enumerate(mass_functions_percentage):
     arr=np.round(mfp[0])
