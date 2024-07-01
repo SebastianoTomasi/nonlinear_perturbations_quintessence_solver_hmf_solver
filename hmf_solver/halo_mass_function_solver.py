@@ -32,7 +32,7 @@ import simulation_parameters as params
 
 #%%
 
-save=True#Save the plots and data
+save=True #Save the plots and data
 
 use_react_data=True
 
@@ -71,6 +71,7 @@ elif params.window_function=="GAUS":
         return cosm_func.GAUS_window_function(k, M)
     def dW2(k,M):#window function squared w.r.t k
         return cosm_func.GAUS_window_function2_derivative(k, M)
+    
 """Define which hmf compute"""
 if params.fitting_func=="PS":
     f=cosm_func.f_ps
@@ -118,27 +119,27 @@ delta_c_lcdm=sp.interpolate.interp1d(np.array(numerical_delta_c_lcdm[0][0]),
 
 """"""
 
-pk_lcdm=[]
-pk_nl_lcdm=[]
+pk_lcdm_list=[]
+nl_pk_lcdm_list=[]
 hmf_lcdm=[]
 for redshift_index in range(1,len(params.z)+1):
     if use_react_data:
         pk_lcdm_numerical=myie.import_react_pk(react_data_lcdm+"_z"+str(redshift_index)+"_pk","l")
+        nl_pk_lcdm_numerical=myie.import_react_pk(react_data_lcdm+"_z"+str(redshift_index)+"_pk","nl")
     else:
         pk_lcdm_numerical=myie.import_class_pk(class_data_lcdm+"_z"+str(redshift_index)+"_pk")
+        nl_pk_lcdm_numerical=myie.import_class_pk(class_data_lcdm+"_z"+str(redshift_index)+"_pk_nl")
     """Check if the ranges for k nicely overlap. """
     if not aux.krange_is_ok(pk_lcdm_numerical[0], params.min_k, params.max_k):
         raise Exception(f"The provided k range [{params.min_k}, {params.max_k}] is not compatible with the CLASS data.\
                         Please adjust k_min and k_max to be within the valid range\
                             [{pk_lcdm_numerical[0][0]}, {pk_lcdm_numerical[0][-1]}].")
-    if use_react_data:                        
-        nonlinear_power_spectrum_lcdm_numerical=myie.import_react_pk(react_data_lcdm+"_z"+str(redshift_index)+"_pk","nl")
-    else:
-     nonlinear_power_spectrum_lcdm_numerical=myie.import_class_pk(class_data_lcdm+"_z"+str(redshift_index)+"_pk_nl")
+
         
-    nonlinear_power_spectrum_lcdm=sp.interpolate.interp1d(nonlinear_power_spectrum_lcdm_numerical[0], nonlinear_power_spectrum_lcdm_numerical[1],
+        
+    nl_pk_lcdm=sp.interpolate.interp1d(nl_pk_lcdm_numerical[0], nl_pk_lcdm_numerical[1],
                                         fill_value="extrapolate", assume_sorted=True)
-    class_pk_lcdm=sp.interpolate.interp1d(pk_lcdm_numerical[0], pk_lcdm_numerical[1],
+    pk_lcdm=sp.interpolate.interp1d(pk_lcdm_numerical[0], pk_lcdm_numerical[1],
                                         fill_value="extrapolate", assume_sorted=True)
 
 
@@ -147,7 +148,7 @@ for redshift_index in range(1,len(params.z)+1):
     numerical_sigma_M=[]
     for M in masses:
         def sigma_integrand(k):
-            return 1/(2*np.pi**2)*k**2*class_pk_lcdm(k)*W(k,M)**2
+            return 1/(2*np.pi**2)*k**2*pk_lcdm(k)*W(k,M)**2
         numerical_sigma_M.append(np.sqrt(mynm.integrate(sigma_integrand,
                                                         params.min_k, params.max_k,
                                                         atol=params.mass_variance_filtered_spectrum_atol,
@@ -161,7 +162,7 @@ for redshift_index in range(1,len(params.z)+1):
     for M in masses:
         R=params.mass_to_radius*M**(1/3)
         def log_der_integrand(k):
-            return dW2(k,M)*class_pk_lcdm(k)/k**2
+            return dW2(k,M)*pk_lcdm(k)/k**2
         numerical_log_der_of_log_sigma.append(3/(2*sigma_lcdm(M)**2*np.pi**2*R**4)*mynm.integrate(log_der_integrand,
                                                                                                   params.min_k, params.max_k,
                                                                                                   rtol=params.log_der_of_log_sigma_rtol,atol=params.log_der_of_log_sigma_atol)[1][-1])
@@ -172,8 +173,8 @@ for redshift_index in range(1,len(params.z)+1):
     """Compute the mass function for LCDM"""
     mass_function_lcdm=cosm_func.create_mass_function(f,sigma_lcdm,growth_factor_lcdm_z,delta_c_lcdm,log_der_of_log_sigma,params.rho_m0_Ms_Mpc)
     
-    pk_lcdm.append(class_pk_lcdm)
-    pk_nl_lcdm.append(nonlinear_power_spectrum_lcdm)
+    pk_lcdm_list.append(pk_lcdm)
+    nl_pk_lcdm_list.append(nl_pk_lcdm)
     hmf_lcdm.append(mass_function_lcdm)
     myie.save_to_txt_twocolumns([masses,mass_function_lcdm(masses,params.z[redshift_index-1])],path="../data/mass_function/LCDM/"+str(redshift_index-1)+"_lcdm_"+params.fitting_func.lower()+"_hmf")
 
@@ -263,8 +264,10 @@ for redshift_index in range(1,len(params.z)+1):
         """Before creating the mass fucntion we need to get the power spectrum and normalize it."""
         if use_react_data:
             linear_power_spectrum_numerical=np.array(myie.import_react_pk(pk_data_path,"l"))
+            nonlinear_power_spectrum_numerical=myie.import_react_pk(relative_path=data_path+"z"+str(redshift_index)+"_"+"pk",which="nl")
         else:
             linear_power_spectrum_numerical=np.array(myie.import_class_pk(pk_data_path))
+            nonlinear_power_spectrum_numerical=myie.import_class_pk(relative_path=data_path+"z"+str(redshift_index)+"_"+"pk_nl")
             
         linear_power_spectrum=sp.interpolate.interp1d(linear_power_spectrum_numerical[0], linear_power_spectrum_numerical[1],
                                                 fill_value="extrapolate", assume_sorted=True)
@@ -319,15 +322,12 @@ for redshift_index in range(1,len(params.z)+1):
         
         
         linear_power_spectrums.append([k,linear_power_spectrum(k)])
-        linear_power_spectrums_percentage.append([k,(linear_power_spectrum(k)/pk_lcdm[redshift_index-1](k)-1)*100])
-        if use_react_data:
-            nonlinear_power_spectrum_numerical=myie.import_react_pk(relative_path=data_path+"z"+str(redshift_index)+"_"+"pk",which="nl")
-        else:
-            nonlinear_power_spectrum_numerical=myie.import_class_pk(relative_path=data_path+"z"+str(redshift_index)+"_"+"pk_nl")
+        linear_power_spectrums_percentage.append([k,(linear_power_spectrum(k)/pk_lcdm_list[redshift_index-1](k)-1)*100])
+            
         nonlinear_power_spectrum=sp.interpolate.interp1d(nonlinear_power_spectrum_numerical[0], nonlinear_power_spectrum_numerical[1],
                                             fill_value="extrapolate", assume_sorted=True)
         nonlinear_power_spectrums.append([k,nonlinear_power_spectrum(k)])
-        nonlinear_power_spectrums_percentage.append([k,(nonlinear_power_spectrum(k)/pk_nl_lcdm[redshift_index-1](k)-1)*100])
+        nonlinear_power_spectrums_percentage.append([k,(nonlinear_power_spectrum(k)/nl_pk_lcdm_list[redshift_index-1](k)-1)*100])
     
     """Save data"""
     if save:
@@ -344,7 +344,7 @@ print(f"Output saved at: {save_data_to_path}")
 for i in range(len(params.z)):
     legend.append(r"$\Lambda$CDM   z="+str(params.z[i]))
     halo_mass_functions.append([masses,hmf_lcdm[i](masses,params.z[i])])
-    nonlinear_power_spectrums.append([k,pk_nl_lcdm[i](k)])
+    nonlinear_power_spectrums.append([k,nl_pk_lcdm_list[i](k)])
 
 #%%
 import plotting_functions as mypl

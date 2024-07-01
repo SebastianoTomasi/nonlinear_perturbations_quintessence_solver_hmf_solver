@@ -64,7 +64,7 @@ halo_mass_function_run_params={
     "fitting_func":"ST",# PS, ST
     "window_function":"TH",#TH GAUS
     "z":[0,0.5,1],#Redshifts at which the mass function is computed.
-    "this_run_specifier_1": "unperturbed_de",#[ "unperturbed_de", "perturbed_de", "LCDM", "EDS"]
+    "this_run_specifier_1": "perturbed_de",#[ "unperturbed_de", "perturbed_de", "LCDM", "EDS"]
     "this_run_specifier_2": "de_eos_1",#wCDM,LCDM,de_eos_1,...,de_eos_6
     "this_run_specifier_3": "w_i",#['w_i','w_f','trans_steepness','trans_z']
     #Rrange for the mass function
