@@ -14,7 +14,6 @@ import numpy as np
 
 import os
 
-import copy
 import matplotlib.pyplot as plt
 plt.rcParams['text.usetex'] = True
 
@@ -34,15 +33,9 @@ def print_dict(D):
     for key,value in D.items():
         print(key+"=",value)
         
-def depth_of_structure(obj, depth=0):
-    if isinstance(obj, (list, tuple, np.ndarray)):
-        if len(obj) > 0:
-            return depth_of_structure(obj[0], depth + 1)
-    return depth
-    
 
 
-def plot(func_to_plot,
+def plot(f,
          xlabel=["$x$"], ylabel=["$y$"],
          title="Function plot",
          legend=[("First", "Second")],
@@ -58,7 +51,6 @@ def plot(func_to_plot,
     
     """Everithing must be vectorized to allow for stacked plots (one plot on top
     of the other.)"""
-    f= copy.deepcopy(func_to_plot)
     
     if isinstance(xlabel, str):
         xlabel=[xlabel]
@@ -91,39 +83,22 @@ def plot(func_to_plot,
     
     """Check if the input is a single plot [x,y], a multi plot[[x_1,y_1],[x_2,y_2]..]
     or a stacked plot.[[multi plot 1],[multi plot 2]]"""
-
-
-    structure_depth = depth_of_structure(f)
-    is_singleplot = structure_depth == 1
-    stacked_plots = structure_depth == 4
-    
-    if is_singleplot:
-        f=[f]
-    """Add the functions to compare to the array of functions to display"""
-    if not stacked_plots:
-        number_func_to_plot=len(f)
-        if func_to_compare is not None:
-            displayed_points=500
-            for j in range(number_func_to_plot):
-                if xscale=="log":
-                    display_x = logspace(f[j][0][0], f[j][0][-1],displayed_points)
-                else:
-                    display_x = np.linspace(f[j][0][0], f[j][0][-1],displayed_points)
-                try:
-                    function = np.vectorize(func_to_compare[j])
-                except:
-                    print(f"There are more functions {len(f)} then functions to compare {len(func_to_compare)}")
-                display_y=function(display_x)
-                f.append([display_x,display_y])
-                
+    is_singleplot = False
+    stacked_plots=True
+    try:
+        f[0][0][0]
+    except (IndexError, TypeError):#Index for numpy floats and Type for standard float
+        is_singleplot = True
+    try:
+        f[0][0][0][0]
+    except(IndexError, TypeError):
+        stacked_plots=False
+        
     """Distinghish if the user wants two plots stacked or one."""
     if stacked_plots:
-        number_func_to_plot=len(f[0])
-        
         fig, ax = pl.subplots(nrows=2, ncols=1, figsize=(12, 14), dpi=100,sharex=True)
     else:
         fig, ax = pl.subplots(figsize=(10, 6), dpi=100)
-        
         ax=[ax]#Vectorize in order to make the same code work for stacked_plots=True
 
     # Create a list to hold the custom handles
@@ -139,55 +114,36 @@ def plot(func_to_plot,
     for i in range(len(ax)):
         ax[i].set_xscale(xscale[i])
         ax[i].set_yscale(yscale[i])
-        if stacked_plots:
+        if is_singleplot:
+            ax[i].plot(f[0], f[1], colors[0] + dots(dotted), linestyle= linestyle_str[0]  if connect_the_dots else "None" ,linewidth=line_width)
+            # Create a custom handle for this line
+            line = Line2D([0], [0], color=colors[0], linestyle=linestyle_str[0], linewidth=line_width)
+            handles.append(line)
+            if zoomed:
+                axins = ax[i].inset_axes(zoomed_position)
+                axins.plot(f[0], f[1],"b",linewidth=line_width)
+                axins.set_xlim(zoomed_xlim)
+                axins.set_ylim(zoomed_ylim)
+                ax[i].indicate_inset_zoom(axins)
+        elif stacked_plots:
             for j in range(len(f[i])):
                 ax[i].plot(f[i][j][0], f[i][j][1], colors[j % 6] + dots(dotted), linestyle=linestyle_str[j % 4] if connect_the_dots else "None",linewidth=line_width)
                 # Create a custom handle for this line
                 line = Line2D([0], [0], color=colors[j % 6], linestyle=linestyle_str[j % 4], linewidth=line_width)
                 handles.append(line)
         else:
-           # Create inset axis if zoomed is True
-           # Create inset axis if zoomed is True
-            axins = ax[i].inset_axes(zoomed_position) if zoomed else None
-            
-            # Determine the total number of functions to plot
-            number_func_to_compare = len(func_to_compare) if func_to_compare is not None else 0
-            total_functions = number_func_to_plot + number_func_to_compare
-            
-            # Clear existing handles to avoid incorrect legend entries
-            handles = []
-            
-            # Loop over all functions and plot them
-            for j in range(total_functions):
-                if j >= number_func_to_plot:
-                    # Plot in red for functions beyond `number_func_to_plot`
-                    color = "r"
-                    linestyle = "-"
-                else:
-                    # Plot with the regular color scheme for the first `number_func_to_plot` functions
-                    color = colors[j % 6]
-                    linestyle = linestyle_str[j % 4] if connect_the_dots else "None"
-                
-                # Plot on the main axis
-                ax[i].plot(f[j][0], f[j][1], color + dots(dotted), linestyle=linestyle, linewidth=line_width)
-            
-                # Create a single line handle based on the main plot's appearance
-                line_handle = Line2D([0], [0], color=color, linestyle=linestyle, linewidth=line_width)
-                handles.append(line_handle)
-            
-                # Plot on the zoomed inset axis if zoomed is True
+            axins = ax[i].inset_axes(zoomed_position)   if zoomed else None
+            for j in range(len(f)):
+                ax[i].plot(f[j][0], f[j][1], colors[j % 6] + dots(dotted), linestyle=linestyle_str[j % 4] if connect_the_dots else "None",linewidth=line_width)
                 if zoomed:
-                    axins.plot(f[j][0], f[j][1], color + dots(zoomed_dotted), linestyle=linestyle, linewidth=line_width)
+                    axins.plot(f[j][0], f[j][1], colors[j % 6] + dots(zoomed_dotted), linestyle=linestyle_str[j % 4],linewidth=line_width)
                     axins.set_xlim(zoomed_xlim)
                     axins.set_ylim(zoomed_ylim)
                     ax[i].indicate_inset_zoom(axins)
-            
-            # The `handles` list now contains the correct handles for the legend
-            # Create the legend on the main axis
-            ax[i].legend(handles=handles, loc='best')
 
-
-
+                # Create a custom handle for this line
+                line = Line2D([0], [0], color=colors[j % 6], linestyle=linestyle_str[j % 4], linewidth=line_width)
+                handles.append(line)
         ax[i].set_title(title, fontsize=title_fontsize)
 
         ax[i].set_xlabel(xlabel[i], fontsize=xy_labels_fontsize)
@@ -195,6 +151,31 @@ def plot(func_to_plot,
         
         ax[i].tick_params(axis='both', which='both', labelsize=labelsize)
         
+        if func_to_compare is not None:
+            num=1000
+            if is_singleplot:
+                if xscale=="log":
+                    x = logspace(f[0][0], f[0][-1],num)
+                else:
+                    x = np.linspace(f[0][0], f[0][-1],num)
+                function = np.vectorize(func_to_compare[0])
+                ax[i].plot(x, function(x), "r")
+                line = Line2D([0], [0], color="r", linewidth=line_width)
+                handles.append(line)
+            else:
+                for j in range(len(f)):
+                    if xscale=="log":
+                        x = logspace(f[j][0][0], f[j][0][-1],num)
+                    else:
+                        x = np.linspace(f[j][0][0], f[j][0][-1],num)
+                    try:
+                        function = np.vectorize(func_to_compare[j])
+                    except:
+                        print(f"There are more functions {len(f)} then functions to compare {len(func_to_compare)}")
+                    ax[i].plot(x, function(x), "r")
+                    line = Line2D([0], [0], color="r", linewidth=line_width)
+                    handles.append(line)
+            
         
         if xlim is not None:
             ax[i].set_xlim(xlim[i])

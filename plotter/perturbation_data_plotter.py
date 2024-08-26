@@ -27,7 +27,7 @@ import plotting_functions as mypl
 
 # %%
 
-save = True
+save = False
 format_=".pdf"#".pdf"
 
 compute_approximations=False
@@ -35,9 +35,9 @@ compute_approximations=False
 normalize_to_unity=False # D+(a=1)=1
 
 this_run_specifier_0 = "linear_perturbations"
-this_run_specifier_1 = "unperturbed_de"
-this_run_specifier_2 = "de_eos_5"
-this_run_specifier_3 = "trans_steepness"
+this_run_specifier_1 = "perturbed_de"
+this_run_specifier_2 = "de_eos_1"
+this_run_specifier_3 = "w_i"
 
 name_specifiers_0 = ["nonlinear_perturbations", "linear_perturbations","quintessence_model"]
 name_specifiers_1 = ["plots", "unperturbed_de", "perturbed_de", "LCDM", "EDS"]
@@ -382,7 +382,7 @@ if this_run_specifier_0 == "linear_perturbations":
                 legend=legend,
                 func_to_compare=linear_perturbations_lcdm_a,
                 save=save,
-                 format_=format_,
+                  format_=format_,
                 dotted=False,
                 name=save_plot_to_path+"density_contrast_matter_a",
                 # xlim=(0.9,1),ylim=(0.7,0.85)
