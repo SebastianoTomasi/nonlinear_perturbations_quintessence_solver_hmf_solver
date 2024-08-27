@@ -27,7 +27,7 @@ import plotting_functions as mypl
 
 # %%
 
-save = False
+save = True
 format_=".pdf"#".pdf"
 
 compute_approximations=False
@@ -36,8 +36,8 @@ normalize_to_unity=False # D+(a=1)=1
 
 this_run_specifier_0 = "linear_perturbations"
 this_run_specifier_1 = "perturbed_de"
-this_run_specifier_2 = "de_eos_1"
-this_run_specifier_3 = "w_i"
+this_run_specifier_2 = "de_eos_5"
+this_run_specifier_3 = "trans_steepness"
 
 name_specifiers_0 = ["nonlinear_perturbations", "linear_perturbations","quintessence_model"]
 name_specifiers_1 = ["plots", "unperturbed_de", "perturbed_de", "LCDM", "EDS"]
